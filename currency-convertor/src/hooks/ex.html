@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Currency API Fetch</title>
+</head>
+<body>
+  <div id="msg"></div>
+  <script>
+    // Example variables
+    const fromCurrency = 'usd'; // Change as needed
+    const toCurrency = 'eur'; // Change as needed
+    const baseURL = `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies`;
+    const URL = `${baseURL}/${fromCurrency}.json`;
+
+    const fetchExchangeRate = async () => {
+      try {
+        let response = await fetch(URL);
+        if (!response.ok) {
+          throw new Error(`Network response was not ok`);
+        }
+        
+        let responseJSON = await response.json();
+        let rate = responseJSON[fromCurrency][toCurrency];
+
+        document.getElementById('msg').innerText = 
+          rate ? `Exchange rate from ${fromCurrency} to ${toCurrency} is ${rate}` 
+               : `Exchange rate data is not available`;
+      } catch (error) {
+        document.getElementById('msg').innerText = 
+          `Failed to fetch exchange rate. Try again later.`;
+        console.error("Fetch error:", error);
+      }
+    };
+
+    // Run the async function
+    fetchExchangeRate();
+  </script>
+</body>
+</html>
